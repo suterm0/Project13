@@ -1,3 +1,6 @@
+# Michael Suter
+# Final Project!
+# 5.10.2020
 import sqlite3
 from sqlite3 import Error
 
