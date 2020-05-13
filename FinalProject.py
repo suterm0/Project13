@@ -13,7 +13,7 @@ def choice():
     4 to exit code. 
     """)
     answer = int(input(">"))
-    while answer <= 1 >= 3:
+    while answer <= 1 >= 3:     # Unlimited loop to repeat menu
         choice()
     if answer == 1:
         customer_menu()
@@ -35,9 +35,9 @@ def customer_menu():
     5 to return to the main menu
     """)
     answer = int(input(">"))
-    while answer <= 1 >= 5:
+    while answer <= 1 >= 5:         # unlimited loop to repeat customer_menu()
         customer_menu()
-    if answer == 1:
+    if answer == 1:         # This is my code for the add to customer table option
         print("Please enter the details for the person:")
         first_name = input("What is the first name?")
         last_name = input("What is the last name?")
@@ -45,28 +45,30 @@ def customer_menu():
         city = input("What is the city?")
         state = input("What is the state?")
         zip_code = input("What is the zip code?")
-        create_customer = f"""
-        INSERT INTO
+        # Create_customer inserts the inputed date above^ into the customer table
+        create_customer = f"""  
+        INSERT INTO                        
             customer (first, last, address, city, state, zip)
         VALUES
-        ('{first_name}', '{last_name}', '{street_address}', '{city}', '{state}', '{zip_code}');
+        ('{first_name}', '{last_name}', '{street_address}', '{city}', '{state}', '{zip_code}')
+        );
         """
         execute_query(connection, create_customer)
         print("Here is the customer table")
-        select_customers = "SELECT * from customer"
+        select_customers = "SELECT * from customer"  # Selects all from the customer table and returns it automatically, how nice
         people = execute_read_query(connection, select_customers)
         for person in people:
             print(person)
             return choice()
-    if answer == 2:
+    if answer == 2:         # This is the update/modify customer code
         update_customer = """ (
         UPDATE customer
         SET last_name = "magee"
         WHERE last_name = "suter"
         );
         """
-        execute_query(connection, update_customer)
-        print("Whos last name was 'Suter' is now 'magee'")
+        execute_query(connection, update_customer)      # executes the query
+        print("Who's last name was 'Suter' is now 'magee'")
         return choice()
     if answer == 3:
         print("Here is the customer table")
@@ -79,7 +81,8 @@ def customer_menu():
         delete_book = """(
         DELETE FROM customer
         WHERE last_name = "magee"
-        );"""
+        );
+        """
         execute_query(connection, delete_book)
         print("You just deleted any person with the last name 'magee'")
         return choice()
@@ -113,10 +116,10 @@ def books_menu():
         VALUES
         ('{title}', '{author}', '{isbn}', '{edition}', '{price}', '{publisher}');
         """
-        execute_query(connection, create_book)
+        execute_query(connection, create_book)          # executes the query
         print("Here is the books table")
         select_book = "SELECT * from books"
-        books = execute_read_query(connection, select_book)
+        books = execute_read_query(connection, select_book)     # executes the query
         for book in books:
             print(book)
             return choice()
@@ -133,7 +136,7 @@ def books_menu():
     if answer == 3:
         print("Here is the books table")
         select_book = "SELECT * from books"
-        books = execute_read_query(connection, select_book)
+        books = execute_read_query(connection, select_book)         # executes the query
         for book in books:
             print(book)
             return choice()
@@ -142,7 +145,7 @@ def books_menu():
         DELETE FROM books
         WHERE title = "magee"
         );"""
-        execute_query(connection, delete_book)
+        execute_query(connection, delete_book)      # executes the query
         print("You just deleted any book with the title 'magee'")
         return choice()
     else:
@@ -171,7 +174,7 @@ def order_menu():
         VALUES
         ('{order_date}', '{order_cost}', '{quantity}');
         """
-        execute_query(connection, create_order)
+        execute_query(connection, create_order)     # executes the query
         create_orderlineitem = f"""
         INSERT INTO 
             orderlineitem (quantity)
@@ -179,26 +182,29 @@ def order_menu():
         ('{quantity}');
         """
         execute_query(connection, create_orderlineitem)
-        print("Here is the orders table")
-        select_book = "SELECT * from books"
-        orders = execute_read_query(connection, select_book)
+        print("Here is the newly updated orders table")
+        print("The following table appears like so (Order#, Order date, Cost per book, Customer_id)")
+        select_order = "SELECT * from orders"
+        orders = execute_read_query(connection, select_order)        # executes the query
         for order in orders:
             print(order)
-            return choice()
+        return choice()
     if answer == 2:
-        print("Here is the orders table")
-        select_book = "SELECT * from books"
-        orders = execute_read_query(connection, select_book)
+        print("Here is the newly updated orders table")
+        print("The following table appears like so (Order#, Order date, Cost per book, Customer_id")
+        select_order = "SELECT * from orders"
+        orders = execute_read_query(connection, select_order)        # executes the query
         for order in orders:
             print(order)
-            return choice()
+        return choice()
     if answer == 3:
         print("Here is the advanced information table")
+        print("The following table appears like so (Order_id, book_id, quantity of books ordered)")
         select_order = "SELECT * from orderlineitem"
-        orders = execute_read_query(connection, select_order)
+        orders = execute_read_query(connection, select_order)       # executes the query
         for order in orders:
             print(order)
-            return choice()
+        return choice()
     if answer == 4:
         choice()
 
@@ -212,10 +218,6 @@ def create_connection(path):
         print(f"The error '{e}' occurred")
 
     return conn
-
-
-print("Connect to SQLite database:")
-connection = create_connection("Assignment13.db")
 
 
 def execute_query(connection, query):
@@ -239,22 +241,14 @@ def execute_read_query(connection, query):
         print(f"The error '{e}' occurred")
 
 
-create_order_table = """
-CREATE TABLE IF NOT EXISTS orders (
-    order_number INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_date TEXT NOT NULL,
-    order_total TEXT NOT NULL,
-    customer_id INTEGER FOREIGN KEY
-);
-"""
-
 create_orderlineitem_table = """
 CREATE TABLE IF NOT EXISTS orderlineitem (
-    order_number INTEGER,
-    book_id INTEGER,
+    order_number INTEGER AUTOINCREMENT,
+    book_id INTEGER AUTOINCREMENT,
     quantity TEXT NOT NULL,
     PRIMARY KEY (order_number, book_id),
-    FOREIGN KEY (order_number, book_id)
+    FOREIGN KEY (order_number) REFERENCES orders(order_number)
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 """
 
@@ -270,6 +264,16 @@ CREATE TABLE IF NOT EXISTS customer (
 );
 """
 
+create_order_table = """
+CREATE TABLE IF NOT EXISTS orders (
+    order_number INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_date TEXT NOT NULL,
+    order_total TEXT NOT NULL,
+    customer_id INTEGER AUTOINCREMENT,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+"""
+
 create_books_table = """
 CREATE TABLE IF NOT EXISTS books (
     book_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -282,7 +286,11 @@ CREATE TABLE IF NOT EXISTS books (
 );
 """
 
-print("\nRun the query to create the customer table:")
+print("Connect to SQLite database:")
+connection = create_connection("Assignment13.db")
+
+
+print("\nRun the query to create the tables")   # Calls the connection to assignment13.db
 execute_query(connection, create_customer_table)
 execute_query(connection, create_books_table)
 execute_query(connection, create_order_table)
