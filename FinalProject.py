@@ -4,8 +4,14 @@
 import sqlite3
 from sqlite3 import Error
 
+# *DISCLAIMER*  I did not feel the need to write many notes in this program for the reason that the queries are majority of the actual code in here
+# and it just seems pretty self explanatory to me, I know this code is fairly chunky but I don't think there's much of a way around that when working with menus
+# THANK YOU for a great year and being a great teacher. Also another thanks for contributing to my RA app, I got the job and I am very thankful
+# Have a great and safe summer and stay safe, see ya next year(Hopefully)
+
 
 def choice():
+    # Prints the instructions for a nice and clear user interface
     print("""
     Put 1 to pull up the customer menu,
     2 for the books menu,
@@ -27,6 +33,7 @@ def choice():
 
 
 def customer_menu():
+    # Prints the instructions for a nice and clear user interface
     print("""
     1 to add to the customer table
     2 to modify a customers name
@@ -57,6 +64,7 @@ def customer_menu():
         print("Here is the customer table")
         select_customers = "SELECT * from customer"  # Selects all from the customer table and returns it automatically, how nice
         people = execute_read_query(connection, select_customers)
+        # this goes through the table printing each row of data
         for person in people:
             print(person)
             return choice()
@@ -74,6 +82,7 @@ def customer_menu():
         print("Here is the customer table")
         select_customers = "SELECT * from customer"
         people = execute_read_query(connection, select_customers)
+        # this goes through the table printing each row of data
         for person in people:
             print(person)
         return choice()
@@ -92,6 +101,7 @@ def customer_menu():
 
 
 def books_menu():
+    # Prints the instructions for a nice and clear user interface
     print("""
     1 to add to the books table
     2 to modify a book
@@ -100,7 +110,7 @@ def books_menu():
     5 to return to the main menu
     """)
     answer = int(input(">"))
-    while answer <= 1 >= 5:
+    while answer <= 1 >= 5:     # unlimited loop to repeat books_menu()
         customer_menu()
     if answer == 1:
         print("Please enter the following information to add a book to the table")
@@ -120,6 +130,7 @@ def books_menu():
         print("Here is the books table")
         select_book = "SELECT * from books"
         books = execute_read_query(connection, select_book)     # executes the query
+        # this goes through the table printing each row of data
         for book in books:
             print(book)
             return choice()
@@ -136,8 +147,8 @@ def books_menu():
     if answer == 3:
         print("Here is the books table")
         select_book = "SELECT * from books"
-        books = execute_read_query(connection, select_book)         # executes the query
-        for book in books:
+        books = execute_read_query(connection, select_book)     # executes the query
+        for book in books:      # this goes through the table printing each row of data
             print(book)
             return choice()
     if answer == 4:
@@ -154,6 +165,7 @@ def books_menu():
 
 
 def order_menu():
+    # Prints the instructions for a nice and clear user interface
     print("""
     Enter 1 to place an order,
     Enter 2 to view the orders submitted,
@@ -161,7 +173,7 @@ def order_menu():
     Enter 4 to return to the main menu
     """)
     answer = int(input(">"))
-    while answer <= 1 >= 5:
+    while answer <= 1 >= 5:     # Unlimited loop for the menu
         order_menu()
     if answer == 1:
         print("Please enter the following information about the order being recorded.")
@@ -186,7 +198,7 @@ def order_menu():
         print("The following table appears like so (Order#, Order date, Cost per book, Customer_id)")
         select_order = "SELECT * from orders"
         orders = execute_read_query(connection, select_order)        # executes the query
-        for order in orders:
+        for order in orders:        # this goes through the table printing each row of data
             print(order)
         return choice()
     if answer == 2:
@@ -202,7 +214,7 @@ def order_menu():
         print("The following table appears like so (Order_id, book_id, quantity of books ordered)")
         select_order = "SELECT * from orderlineitem"
         orders = execute_read_query(connection, select_order)       # executes the query
-        for order in orders:
+        for order in orders:        # this goes through the table printing each row of data
             print(order)
         return choice()
     if answer == 4:
